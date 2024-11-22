@@ -3,6 +3,7 @@ import scipy
 import scipy.integrate as scint
 import matplotlib.pyplot as plt
 from astropy import units as u
+import csv
 
 ## Question 1 ##
 
@@ -53,7 +54,8 @@ plt.xlabel("Mass (Solar Masses)")
 plt.title("Mass vs Radius")
 plt.axvline(Mch, label="Chandrasekhar Mass Limit")
 plt.legend()
-plt.show()
+# plt.show()
+plt.close()
 
 ## Question 3 ##
 i = 0
@@ -72,4 +74,27 @@ plt.xlabel("Mass (Solar Masses)")
 plt.title("Mass vs Radius")
 plt.axvline(Mch, label="Chandrasekhar Mass Limit")
 plt.legend()
+# plt.show()
+plt.close()
+
+## Question 4 ##
+datafile = 'wd_mass_radius.csv'
+WDMass, WDRadius, WDMassUnc, WDRadUnc = [], [], [], []
+with open(datafile, 'r') as data:
+        for line in data.readlines()[1:]:
+            cols = line.strip().split(',')
+            WDMass.append(float(cols[0]))
+            WDMassUnc.append(float(cols[1]))
+            WDRadius.append(float(cols[2]))
+            WDRadUnc.append(float(cols[3]))
+
+fig = plt.figure() # plotting observed data with the computed data
+plt.errorbar(WDMass, WDRadius, xerr=(WDMassUnc), yerr=(WDRadUnc), linestyle='')
+plt.scatter(WDMass, WDRadius, s=10, label="Observational Data")
+plt.title('Plot of the Mass vs Radii of White Dwarfs in Binary Star Systems')
+plt.xlabel('Mass (Solar Masses)')
+plt.ylabel('Radius (Solar Radii)')
+plt.legend()
+plt.title('Plot of the Mass vs Radii of White Dwarfs in Binary Star Systems')
 plt.show()
+plt.close()
