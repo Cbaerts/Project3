@@ -2,6 +2,7 @@ import numpy as np
 import scipy
 import scipy.integrate as scint
 import matplotlib.pyplot as plt
+from astropy import units as u
 
 # Constants
 Mue = 2
@@ -25,23 +26,23 @@ def Equations8n9(r, y):
 
 def stateSolver(rho):
     intState = [0, rho]
- 
-    # WDrLimit = 9.74*10**8 #radius of white dwarf in m
     rMin = 1e-4
+
     result = scint.solve_ivp(Equations8n9, [rMin, 1000], intState, events=lambda r, y: y[1])
     return result
 
 fig, ax = plt.subplots()
 for rho in RhoC:
     solution = stateSolver(rho)
-    mass = solution.y[0] * M0
+    mass = (solution.y[0] * M0) / u.solMass.to(u.g) 
     density = solution.y[1] * Rho0
-    radius = solution.t * R0
+    radius = (solution.t * R0) / u.solRad.to(u.cm) 
     ax.plot(mass, radius, label=f"RhoC = {rho:.1e}")
 
-plt.ylabel("Radius (cm)")
-plt.xlabel("Mass (g)")
+plt.ylabel("Radius (Solar Radii))")
+plt.xlabel("Mass (Solar Masses)")
 plt.title("Mass vs Radius")
+plt.axvline(Mch, label="Chandrasekhar Mass Limit")
 plt.legend()
 plt.show()
 
