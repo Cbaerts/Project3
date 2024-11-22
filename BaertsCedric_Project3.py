@@ -21,21 +21,27 @@ def Equations8n9(r, y):
     gammaX = x**2/(3*np.sqrt(1+x**2))
     dRhodR = - D0M*D0Rho/(gammaX*r**2)
     dMdR = r**2*D0Rho
-    return dRhodR, dMdR
+    return  dMdR, dRhodR
 
 def stateSolver(rho):
     intState = [0, rho]
  
     # WDrLimit = 9.74*10**8 #radius of white dwarf in m
-    rRange = [1e-10, 1e10]
-    def denisityCheck(r, y):
-        return y[1]
-    result = scint.solve_ivp(Equations8n9, rRange, intState, rtol=1e-3, atol=1e-8, events=denisityCheck)
+    rMin = 1e-4
+    result = scint.solve_ivp(Equations8n9, [rMin, 1000], intState, events=lambda r, y: y[1])
     return result
 
-
+fig, ax = plt.subplots()
 for rho in RhoC:
     solution = stateSolver(rho)
+    mass = solution.y[0] * M0
+    density = solution.y[1] * Rho0
+    radius = solution.t * R0
+    ax.plot(mass, radius, label=f"RhoC = {rho:.1e}")
 
-    print(solution)
-    
+plt.ylabel("Radius (cm)")
+plt.xlabel("Mass (g)")
+plt.title("Mass vs Radius")
+plt.legend()
+plt.show()
+
