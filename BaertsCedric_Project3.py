@@ -38,13 +38,16 @@ def stateSolver(rho, methos):
     return result
 
 ## Question 2 ##
-
+rad = []
+mas = []
 fig, ax = plt.subplots()
 for rho in RhoC:
     solution = stateSolver(rho, 'RK45')
     mass = (solution.y[0] * M0) / u.solMass.to(u.g) 
     density = solution.y[1] * Rho0
     radius = (solution.t * R0) / u.solRad.to(u.cm) 
+    rad.append(radius)
+    mas.append(mass)
     ax.plot(mass, radius, label=f"RhoC = {rho:.1e}")
     if rho in RhoCP3:
         RadiusP3.append(radius)
@@ -54,7 +57,7 @@ plt.xlabel("Mass (Solar Masses)")
 plt.title("Mass vs Radius")
 plt.axvline(Mch, label="Chandrasekhar Mass Limit")
 plt.legend()
-# plt.show()
+plt.show()
 plt.close()
 
 ## Question 3 ##
@@ -74,7 +77,7 @@ plt.xlabel("Mass (Solar Masses)")
 plt.title("Mass vs Radius")
 plt.axvline(Mch, label="Chandrasekhar Mass Limit")
 plt.legend()
-# plt.show()
+plt.show()
 plt.close()
 
 ## Question 4 ##
@@ -88,13 +91,17 @@ with open(datafile, 'r') as data:
             WDRadius.append(float(cols[2]))
             WDRadUnc.append(float(cols[3]))
 
-fig = plt.figure() # plotting observed data with the computed data
+fig, ax = plt.subplots()
+for i in range(len(mas)):
+    ax.plot(mas[i], rad[i], label=f"RhoC = {RhoC[i]:.1e}")
 plt.errorbar(WDMass, WDRadius, xerr=(WDMassUnc), yerr=(WDRadUnc), linestyle='', color='black', zorder=-1)
-plt.scatter(WDMass, WDRadius, s=10, label="Observational Data", color='dodgerblue' zorder=1)
+plt.scatter(WDMass, WDRadius, s=10, label="Observational Data", color='dodgerblue', zorder=1)
 plt.title('Plot of the Mass vs Radii of White Dwarfs in Binary Star Systems')
 plt.xlabel('Mass (Solar Masses)')
 plt.ylabel('Radius (Solar Radii)')
 plt.legend()
+plt.axvline(Mch, label="Chandrasekhar Mass Limit")
 plt.title('Plot of the Mass vs Radii of White Dwarfs in Binary Star Systems')
 plt.show()
 plt.close()
+
