@@ -89,8 +89,8 @@ with open(datafile, 'r') as data:
             WDRadUnc.append(float(cols[3]))
 
 fig = plt.figure() # plotting observed data with the computed data
-plt.errorbar(WDMass, WDRadius, xerr=(WDMassUnc), yerr=(WDRadUnc), linestyle='')
-plt.scatter(WDMass, WDRadius, s=10, label="Observational Data")
+plt.errorbar(WDMass, WDRadius, xerr=(WDMassUnc), yerr=(WDRadUnc), linestyle='', color='black', zorder=-1)
+plt.scatter(WDMass, WDRadius, s=10, label="Observational Data", color='dodgerblue' zorder=1)
 plt.title('Plot of the Mass vs Radii of White Dwarfs in Binary Star Systems')
 plt.xlabel('Mass (Solar Masses)')
 plt.ylabel('Radius (Solar Radii)')
