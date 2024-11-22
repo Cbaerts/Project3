@@ -36,7 +36,7 @@ def stateSolver(rho, methos):
     result = scint.solve_ivp(Equations8n9, [rMin, 1000], intState, events=lambda r, y: y[1], method=methos)
     return result
 
-## Questions 2 ##
+## Question 2 ##
 
 fig, ax = plt.subplots()
 for rho in RhoC:
@@ -55,14 +55,14 @@ plt.axvline(Mch, label="Chandrasekhar Mass Limit")
 plt.legend()
 plt.show()
 
-## Questions 3 ##
+## Question 3 ##
 i = 0
 fig, ax = plt.subplots()
 for rho in RhoCP3:
     solution1 = stateSolver(rho, 'RK23')
-    mass = (solution.y[0] * M0) / u.solMass.to(u.g) 
-    density = solution.y[1] * Rho0
-    radius = (solution.t * R0) / u.solRad.to(u.cm) 
+    mass = (solution.y[0]*M0)/u.solMass.to(u.g) 
+    density = solution.y[1]*Rho0
+    radius = (solution.t*R0)/u.solRad.to(u.cm) 
     ax.plot(mass, radius, label=f"RhoC = {rho:.1e}, Method = RK23")
     ax.plot(MassP3[i], RadiusP3[i], label=f"RhoC = {rho:.1e}, Method = RK45", linestyle='dotted')
     i += 1
