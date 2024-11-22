@@ -59,7 +59,7 @@ plt.show()
 i = 0
 fig, ax = plt.subplots()
 for rho in RhoCP3:
-    solution1 = stateSolver(rho, 'RK23')
+    solution = stateSolver(rho, 'RK23')
     mass = (solution.y[0]*M0)/u.solMass.to(u.g) 
     density = solution.y[1]*Rho0
     radius = (solution.t*R0)/u.solRad.to(u.cm) 
