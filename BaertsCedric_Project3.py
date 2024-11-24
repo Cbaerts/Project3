@@ -1,3 +1,5 @@
+# https://github.com/Cbaerts/Project3
+
 import numpy as np
 import scipy
 import scipy.integrate as scint
@@ -6,7 +8,6 @@ from astropy import units as u
 import csv
 
 ## Question 1 ##
-
 # Constants
 Mue = 2
 R0 = 7.72e8 / Mue #cm
@@ -73,7 +74,7 @@ result: float
     # Initial Conditions
     intState = [0, rho]
     # Minimum radius to avoid dividing by zero
-    rMin = 1e-4
+    rMin = 1e-8
     # result of the IVP. Will stop iterating when the density becomes zero (controlled by the "events=lambda r, y: y[1]")
     result = scint.solve_ivp(Equations8n9, [rMin, 1000], intState, events=lambda r, y: y[1], method=methos)
     return result
@@ -88,7 +89,7 @@ fig, ax = plt.subplots()
 for rho in RhoC:
     # Calls the function to run the IVP for each of the rho values. RK45 is the default integration method.
     solution = stateSolver(rho, 'RK45')
-    # Sets the 0-D solution arrays of the IVP to their actual value in solar masses, g/cm^3, and solar radii respectively. 
+    # Sets the 0-D solution arraysd of the IVP to their actual value in solar masses, g/cm^3, and solar radii respectively. 
     mass = (solution.y[0] * M0) / u.solMass.to(u.g) 
     density = solution.y[1] * Rho0
     radius = (solution.t * R0) / u.solRad.to(u.cm) 
@@ -101,11 +102,12 @@ for rho in RhoC:
         RadiusP3.append(radius)
         MassP3.append(mass)
 # Plot answers
-plt.ylabel("Radius (Solar Radii))")
+plt.ylabel("Radius (Solar Radii)")
 plt.xlabel("Mass (Solar Masses)")
 plt.title("Mass vs Radius")
 plt.axvline(Mch, label="Chandrasekhar Mass Limit")
-plt.legend()
+plt.legend(loc='upper right')
+plt.savefig("BaertsCedric_Fig1_Project3")
 plt.show()
 plt.close()
 
@@ -124,11 +126,12 @@ for rho in RhoCP3:
     ax.plot(MassP3[i], RadiusP3[i], label=f"RhoC = {rho:.1e}, Method = RK45", linestyle='dotted')
     i += 1
 # Plots solutions of the new integration method compared to the default method
-plt.ylabel("Radius (Solar Radii))")
+plt.ylabel("Radius (Solar Radii)")
 plt.xlabel("Mass (Solar Masses)")
 plt.title("Mass vs Radius")
 plt.axvline(Mch, label="Chandrasekhar Mass Limit")
 plt.legend()
+plt.savefig("BaertsCedric_Fig2_Project3")
 plt.show()
 plt.close()
 
@@ -162,6 +165,7 @@ plt.ylabel('Radius (Solar Radii)')
 plt.legend()
 plt.axvline(Mch, label="Chandrasekhar Mass Limit")
 plt.title('Plot of the Mass vs Radii of White Dwarfs in Binary Star Systems')
+plt.savefig("BaertsCedric_Fig3_Project3")
 plt.show()
 plt.close()
 
